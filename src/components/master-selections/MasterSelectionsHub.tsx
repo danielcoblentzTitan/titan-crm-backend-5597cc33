@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Home, PaintBucket, DoorOpen, Zap, Building2, Palette } from "lucide-react";
+import { Home, PaintBucket, DoorOpen, Zap, Building2, Palette, Package } from "lucide-react";
 
 interface MasterSelectionsHubProps {
   projectId: string;
@@ -246,6 +246,14 @@ export const MasterSelectionsHub = ({ projectId }: MasterSelectionsHubProps) => 
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <Button
+            variant="outline"
+            className="h-auto py-4 flex flex-col items-center gap-2"
+            onClick={() => navigate(`/design/packages/${projectId}`)}
+          >
+            <Package className="h-5 w-5" />
+            <span className="text-xs">Packages</span>
+          </Button>
           <Button
             variant="outline"
             className="h-auto py-4 flex flex-col items-center gap-2"
