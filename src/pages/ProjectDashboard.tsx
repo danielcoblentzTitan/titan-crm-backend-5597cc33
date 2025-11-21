@@ -164,7 +164,7 @@ export default function ProjectDashboard() {
               <FileText className="h-4 w-4 mr-2" />
               Generate Full PDF
             </Button>
-            <Button variant="outline" size="sm" onClick={() => navigate(`/project/${projectId}/trades`)}>
+            <Button variant="outline" size="sm" onClick={() => navigate(`/projects/${projectId}/trade-view`)}>
               <FileText className="h-4 w-4 mr-2" />
               Trade Views
             </Button>

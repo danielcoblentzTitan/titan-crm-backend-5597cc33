@@ -38,7 +38,7 @@ function App() {
                 }
               />
               <Route
-                path="/project/:projectId"
+                path="/projects/:projectId"
                 element={
                   <ProtectedRoute>
                     <ProjectDashboard />
@@ -46,7 +46,7 @@ function App() {
                 }
               />
               <Route
-                path="/project/:projectId/room/:roomId"
+                path="/projects/:projectId/room/:roomId"
                 element={
                   <ProtectedRoute>
                     <RoomSelectionsPage />
@@ -54,7 +54,7 @@ function App() {
                 }
               />
               <Route
-                path="/project/:projectId/trades"
+                path="/projects/:projectId/trade-view"
                 element={
                   <ProtectedRoute>
                     <TradeViewPage />
