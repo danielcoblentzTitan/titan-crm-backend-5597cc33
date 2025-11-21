@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { RoomCard } from "@/components/dashboard/RoomCard";
+import { AddRoomDialog } from "@/components/dashboard/AddRoomDialog";
 
 interface Project {
   id: string;
@@ -35,6 +36,7 @@ export default function ProjectDashboard() {
   const [project, setProject] = useState<Project | null>(null);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAddRoom, setShowAddRoom] = useState(false);
 
   useEffect(() => {
     loadProjectData();
@@ -151,7 +153,7 @@ export default function ProjectDashboard() {
         {/* Rooms Section */}
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold">Rooms & Selections</h2>
-          <Button>
+          <Button onClick={() => setShowAddRoom(true)}>
             <Plus className="h-4 w-4 mr-2" />
             Add Room
           </Button>
@@ -161,7 +163,7 @@ export default function ProjectDashboard() {
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
               <p className="text-muted-foreground mb-4">No rooms added yet</p>
-              <Button>
+              <Button onClick={() => setShowAddRoom(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 Add Your First Room
               </Button>
@@ -179,6 +181,13 @@ export default function ProjectDashboard() {
             ))}
           </div>
         )}
+
+        <AddRoomDialog
+          open={showAddRoom}
+          onOpenChange={setShowAddRoom}
+          projectId={projectId!}
+          onSuccess={loadProjectData}
+        />
       </main>
     </div>
   );
