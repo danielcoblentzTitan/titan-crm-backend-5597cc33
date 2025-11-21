@@ -9,6 +9,8 @@ import { RoomCard } from "@/components/dashboard/RoomCard";
 import { AddRoomDialog } from "@/components/dashboard/AddRoomDialog";
 import { AllowanceSummaryWidget } from "@/components/dashboard/AllowanceSummaryWidget";
 import { ProgressWidget } from "@/components/dashboard/ProgressWidget";
+import { EditProjectDialog } from "@/components/dashboard/EditProjectDialog";
+import { EditAllowancesDialog } from "@/components/dashboard/EditAllowancesDialog";
 
 interface Project {
   id: string;
@@ -50,6 +52,8 @@ export default function ProjectDashboard() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddRoom, setShowAddRoom] = useState(false);
+  const [showEditProject, setShowEditProject] = useState(false);
+  const [showEditAllowances, setShowEditAllowances] = useState(false);
 
   useEffect(() => {
     loadProjectData();
@@ -135,11 +139,11 @@ export default function ProjectDashboard() {
           
           {/* Quick Actions */}
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={() => setShowEditProject(true)}>
               <Settings className="h-4 w-4 mr-2" />
               Edit Project Info
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={() => setShowEditAllowances(true)}>
               <Settings className="h-4 w-4 mr-2" />
               Edit Allowances
             </Button>
@@ -269,6 +273,23 @@ export default function ProjectDashboard() {
           projectId={projectId!}
           onSuccess={loadProjectData}
         />
+
+        {project && (
+          <>
+            <EditProjectDialog
+              open={showEditProject}
+              onOpenChange={setShowEditProject}
+              project={project}
+              onSuccess={loadProjectData}
+            />
+            <EditAllowancesDialog
+              open={showEditAllowances}
+              onOpenChange={setShowEditAllowances}
+              project={project}
+              onSuccess={loadProjectData}
+            />
+          </>
+        )}
       </main>
     </div>
   );

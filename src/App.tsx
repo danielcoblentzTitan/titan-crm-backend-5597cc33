@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ProjectList from "./pages/ProjectList";
 import ProjectDashboard from "./pages/ProjectDashboard";
+import RoomSelectionsPage from "./pages/RoomSelectionsPage";
 import { ErrorBoundary } from "./components/ui/error-boundary";
 import { Toaster } from "@/components/ui/toaster";
 import "./App.css";
@@ -40,6 +41,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ProjectDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/project/:projectId/room/:roomId/selections"
+                element={
+                  <ProtectedRoute>
+                    <RoomSelectionsPage />
                   </ProtectedRoute>
                 }
               />
