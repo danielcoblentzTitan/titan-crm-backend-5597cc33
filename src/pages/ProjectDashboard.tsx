@@ -11,6 +11,7 @@ import { AllowanceSummaryWidget } from "@/components/dashboard/AllowanceSummaryW
 import { ProgressWidget } from "@/components/dashboard/ProgressWidget";
 import { EditProjectDialog } from "@/components/dashboard/EditProjectDialog";
 import { EditAllowancesDialog } from "@/components/dashboard/EditAllowancesDialog";
+import { VersionManagement } from "@/components/dashboard/VersionManagement";
 import { generateFullProjectPDF } from "@/utils/projectSummaryPdfGenerator";
 
 interface Project {
@@ -55,6 +56,7 @@ export default function ProjectDashboard() {
   const [showAddRoom, setShowAddRoom] = useState(false);
   const [showEditProject, setShowEditProject] = useState(false);
   const [showEditAllowances, setShowEditAllowances] = useState(false);
+  const [showVersionManagement, setShowVersionManagement] = useState(false);
 
   useEffect(() => {
     loadProjectData();
@@ -166,9 +168,13 @@ export default function ProjectDashboard() {
               <FileText className="h-4 w-4 mr-2" />
               Trade Views
             </Button>
-            <Button variant="outline" size="sm">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => setShowVersionManagement(!showVersionManagement)}
+            >
               <Lock className="h-4 w-4 mr-2" />
-              Lock Selections
+              Version History
             </Button>
           </div>
         </div>
@@ -245,6 +251,18 @@ export default function ProjectDashboard() {
           <AllowanceSummaryWidget projectId={projectId!} />
           <ProgressWidget projectId={projectId!} />
         </div>
+
+        {/* Version Management */}
+        {showVersionManagement && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Selection Version History</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <VersionManagement projectId={projectId!} />
+            </CardContent>
+          </Card>
+        )}
 
         {/* Rooms Section */}
         <div className="mb-4 flex items-center justify-between">
