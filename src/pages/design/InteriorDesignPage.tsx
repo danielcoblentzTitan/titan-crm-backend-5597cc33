@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Save } from "lucide-react";
 import { masterSelectionsService } from "@/services/masterSelectionsService";
+import { PropagationDialog } from "@/components/design/PropagationDialog";
 
 export default function InteriorDesignPage() {
   const { projectId } = useParams<{ projectId: string }>();
@@ -26,6 +27,7 @@ export default function InteriorDesignPage() {
   const [doorColor, setDoorColor] = useState("");
   const [doorHardwareFinish, setDoorHardwareFinish] = useState("");
   const [outletSwitchColor, setOutletSwitchColor] = useState("");
+  const [showPropagationDialog, setShowPropagationDialog] = useState(false);
 
   const { data: masterInterior, isLoading } = useQuery({
     queryKey: ['master_interior_selections', projectId],
@@ -72,6 +74,10 @@ export default function InteriorDesignPage() {
   });
 
   const handleSave = async () => {
+    setShowPropagationDialog(true);
+  };
+
+  const handleConfirmSave = async () => {
     try {
       await masterSelectionsService.updateMasterInterior(projectId!, {
         default_flooring_product_id: selectedFlooringId || null,
@@ -86,9 +92,14 @@ export default function InteriorDesignPage() {
         default_outlet_switch_color: outletSwitchColor || null,
       });
 
+      // Propagate to non-overridden rooms
+      await masterSelectionsService.propagateDefaultsToRooms(projectId!, {
+        onlyNonOverridden: true
+      });
+
       toast({
         title: "Success",
-        description: "Master interior selections saved successfully"
+        description: "Master interior selections saved and applied to rooms"
       });
     } catch (error: any) {
       toast({
@@ -264,6 +275,14 @@ export default function InteriorDesignPage() {
           </CardContent>
         </Card>
       </div>
+
+      <PropagationDialog
+        open={showPropagationDialog}
+        onOpenChange={setShowPropagationDialog}
+        projectId={projectId!}
+        onConfirm={handleConfirmSave}
+        changeDescription="This will update all non-overridden interior selections across all rooms to match your new master selections."
+      />
     </div>
   );
 }
