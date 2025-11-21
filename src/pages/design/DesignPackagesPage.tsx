@@ -32,6 +32,11 @@ export default function DesignPackagesPage() {
       // Apply interior selections
       if (packageData.interior) {
         await masterSelectionsService.updateMasterInterior(projectId!, packageData.interior);
+        
+        // Propagate to existing non-overridden rooms
+        await masterSelectionsService.propagateDefaultsToRooms(projectId!, {
+          onlyNonOverridden: true
+        });
       }
 
       // Apply exterior selections
@@ -41,7 +46,7 @@ export default function DesignPackagesPage() {
 
       toast({
         title: "Success",
-        description: "Design package applied successfully"
+        description: "Design package applied successfully and propagated to existing rooms"
       });
 
       navigate(`/dashboard/${projectId}`);

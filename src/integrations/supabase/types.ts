@@ -55,6 +55,138 @@ export type Database = {
           },
         ]
       }
+      cabinet_products: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          door_style: string | null
+          finish_options: string[] | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          name: string
+          price_tier: string | null
+          sort_order: number | null
+          style: string | null
+          updated_at: string | null
+          wood_species: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          door_style?: string | null
+          finish_options?: string[] | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name: string
+          price_tier?: string | null
+          sort_order?: number | null
+          style?: string | null
+          updated_at?: string | null
+          wood_species?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          door_style?: string | null
+          finish_options?: string[] | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name?: string
+          price_tier?: string | null
+          sort_order?: number | null
+          style?: string | null
+          updated_at?: string | null
+          wood_species?: string | null
+        }
+        Relationships: []
+      }
+      design_packages: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          package_data: Json
+          sort_order: number | null
+          style_category: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          package_data: Json
+          sort_order?: number | null
+          style_category?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          package_data?: Json
+          sort_order?: number | null
+          style_category?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      fixture_products: {
+        Row: {
+          brand: string | null
+          created_at: string | null
+          description: string | null
+          finish: string | null
+          fixture_type: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          model: string | null
+          name: string
+          price_tier: string | null
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          brand?: string | null
+          created_at?: string | null
+          description?: string | null
+          finish?: string | null
+          fixture_type?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          model?: string | null
+          name: string
+          price_tier?: string | null
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          brand?: string | null
+          created_at?: string | null
+          description?: string | null
+          finish?: string | null
+          fixture_type?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          model?: string | null
+          name?: string
+          price_tier?: string | null
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       flooring_products: {
         Row: {
           brand: string | null
@@ -696,6 +828,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      tile_products: {
+        Row: {
+          color_family: string | null
+          created_at: string | null
+          description: string | null
+          finish_type: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          material: string | null
+          name: string
+          price_tier: string | null
+          size: string | null
+          sort_order: number | null
+          tile_type: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          color_family?: string | null
+          created_at?: string | null
+          description?: string | null
+          finish_type?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          material?: string | null
+          name: string
+          price_tier?: string | null
+          size?: string | null
+          sort_order?: number | null
+          tile_type?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          color_family?: string | null
+          created_at?: string | null
+          description?: string | null
+          finish_type?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          material?: string | null
+          name?: string
+          price_tier?: string | null
+          size?: string | null
+          sort_order?: number | null
+          tile_type?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
