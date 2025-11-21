@@ -54,8 +54,31 @@ const selectionSchema = z.object({
 type SelectionFormValues = z.infer<typeof selectionSchema>;
 
 interface AddSelectionDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   projectId: string;
   roomId: string;
+  categoryId?: string;
+  editingItem?: {
+    id: string;
+    label: string;
+    description?: string;
+    material_type?: string;
+    brand?: string;
+    model_or_sku?: string;
+    color_name?: string;
+    finish?: string;
+    quantity?: number;
+    unit?: string;
+    unit_cost_allowance?: number;
+    total_cost_allowance?: number;
+    is_upgrade?: boolean;
+    upgrade_cost?: number;
+    notes_for_sub?: string;
+    image_url?: string;
+    trade?: string;
+    category_id: string;
+  };
   onSuccess: () => void;
 }
 
@@ -65,8 +88,15 @@ interface Category {
   trade: string;
 }
 
-export function AddSelectionDialog({ projectId, roomId, onSuccess }: AddSelectionDialogProps) {
-  const [open, setOpen] = useState(false);
+export function AddSelectionDialog({ 
+  open, 
+  onOpenChange, 
+  projectId, 
+  roomId, 
+  categoryId,
+  editingItem,
+  onSuccess 
+}: AddSelectionDialogProps) {
   const [categories, setCategories] = useState<Category[]>([]);
   const { toast } = useToast();
 
@@ -95,6 +125,48 @@ export function AddSelectionDialog({ projectId, roomId, onSuccess }: AddSelectio
     loadCategories();
   }, []);
 
+  useEffect(() => {
+    if (open && editingItem) {
+      // Populate form with editing item data
+      form.reset({
+        category_id: editingItem.category_id,
+        label: editingItem.label,
+        description: editingItem.description || "",
+        material_type: editingItem.material_type || "",
+        brand: editingItem.brand || "",
+        model_or_sku: editingItem.model_or_sku || "",
+        color_name: editingItem.color_name || "",
+        finish: editingItem.finish || "",
+        quantity: editingItem.quantity?.toString() || "",
+        unit: editingItem.unit || "",
+        unit_cost_allowance: editingItem.unit_cost_allowance?.toString() || "",
+        total_cost_allowance: editingItem.total_cost_allowance?.toString() || "",
+        is_upgrade: editingItem.is_upgrade || false,
+        upgrade_cost: editingItem.upgrade_cost?.toString() || "",
+        notes_for_sub: editingItem.notes_for_sub || "",
+      });
+    } else if (open && !editingItem) {
+      // Reset form for new item
+      form.reset({
+        category_id: categoryId || "",
+        label: "",
+        description: "",
+        material_type: "",
+        brand: "",
+        model_or_sku: "",
+        color_name: "",
+        finish: "",
+        quantity: "",
+        unit: "",
+        unit_cost_allowance: "",
+        total_cost_allowance: "",
+        is_upgrade: false,
+        upgrade_cost: "",
+        notes_for_sub: "",
+      });
+    }
+  }, [open, editingItem, categoryId, form]);
+
   const loadCategories = async () => {
     const { data, error } = await supabase
       .from("selection_categories")
@@ -112,61 +184,68 @@ export function AddSelectionDialog({ projectId, roomId, onSuccess }: AddSelectio
   const onSubmit = async (values: SelectionFormValues) => {
     try {
       const selectedCategory = categories.find((c) => c.id === values.category_id);
+      const itemData = {
+        project_id: projectId,
+        room_id: roomId,
+        category_id: values.category_id,
+        trade: selectedCategory?.trade || null,
+        label: values.label,
+        description: values.description || null,
+        material_type: values.material_type || null,
+        brand: values.brand || null,
+        model_or_sku: values.model_or_sku || null,
+        color_name: values.color_name || null,
+        finish: values.finish || null,
+        quantity: values.quantity ? parseFloat(values.quantity) : null,
+        unit: values.unit || null,
+        unit_cost_allowance: values.unit_cost_allowance ? parseFloat(values.unit_cost_allowance) : null,
+        total_cost_allowance: values.total_cost_allowance ? parseFloat(values.total_cost_allowance) : null,
+        is_upgrade: values.is_upgrade,
+        upgrade_cost: values.upgrade_cost ? parseFloat(values.upgrade_cost) : null,
+        notes_for_sub: values.notes_for_sub || null,
+      };
 
-      const { error } = await supabase.from("selection_items").insert([
-        {
-          project_id: projectId,
-          room_id: roomId,
-          category_id: values.category_id,
-          trade: selectedCategory?.trade || null,
-          label: values.label,
-          description: values.description || null,
-          material_type: values.material_type || null,
-          brand: values.brand || null,
-          model_or_sku: values.model_or_sku || null,
-          color_name: values.color_name || null,
-          finish: values.finish || null,
-          quantity: values.quantity ? parseFloat(values.quantity) : null,
-          unit: values.unit || null,
-          unit_cost_allowance: values.unit_cost_allowance ? parseFloat(values.unit_cost_allowance) : null,
-          total_cost_allowance: values.total_cost_allowance ? parseFloat(values.total_cost_allowance) : null,
-          is_upgrade: values.is_upgrade,
-          upgrade_cost: values.upgrade_cost ? parseFloat(values.upgrade_cost) : null,
-          notes_for_sub: values.notes_for_sub || null,
-        },
-      ]);
+      let error;
+      if (editingItem) {
+        // Update existing item
+        const result = await supabase
+          .from("selection_items")
+          .update(itemData)
+          .eq("id", editingItem.id);
+        error = result.error;
+      } else {
+        // Insert new item
+        const result = await supabase
+          .from("selection_items")
+          .insert([itemData]);
+        error = result.error;
+      }
 
       if (error) throw error;
 
       toast({
         title: "Success",
-        description: "Selection item added successfully",
+        description: editingItem ? "Selection updated successfully" : "Selection added successfully",
       });
 
       form.reset();
-      setOpen(false);
+      onOpenChange(false);
       onSuccess();
     } catch (error) {
-      console.error("Error adding selection:", error);
+      console.error("Error saving selection:", error);
       toast({
         title: "Error",
-        description: "Failed to add selection item",
+        description: editingItem ? "Failed to update selection" : "Failed to add selection",
         variant: "destructive",
       });
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button size="sm">
-          <Plus className="h-4 w-4 mr-2" />
-          Add Selection
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Add Selection Item</DialogTitle>
+          <DialogTitle>{editingItem ? "Edit Selection Item" : "Add Selection Item"}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -411,10 +490,10 @@ export function AddSelectionDialog({ projectId, roomId, onSuccess }: AddSelectio
             />
 
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 Cancel
               </Button>
-              <Button type="submit">Add Selection</Button>
+              <Button type="submit">{editingItem ? "Save Changes" : "Add Selection"}</Button>
             </DialogFooter>
           </form>
         </Form>
