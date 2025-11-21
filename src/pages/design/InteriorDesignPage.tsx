@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { FlooringGallery } from "@/components/visual-selections/FlooringGallery";
+import { DoorSelector } from "@/components/visual-selections/DoorSelector";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
@@ -18,6 +19,7 @@ export default function InteriorDesignPage() {
   const { toast } = useToast();
   
   const [selectedFlooringId, setSelectedFlooringId] = useState<string>("");
+  const [selectedDoorId, setSelectedDoorId] = useState<string>("");
   const [wallPaintColor, setWallPaintColor] = useState("");
   const [wallPaintBrand, setWallPaintBrand] = useState("");
   const [ceilingPaintColor, setCeilingPaintColor] = useState("");
@@ -207,13 +209,19 @@ export default function InteriorDesignPage() {
         {/* Trim & Doors Section */}
         <Card>
           <CardHeader>
-            <CardTitle>Trim & Doors</CardTitle>
+            <CardTitle>Interior Doors</CardTitle>
             <CardDescription>
-              Set default styles for interior trim, doors, and hardware
+              Select the default interior door style that will apply throughout the home
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <CardContent>
+            <DoorSelector
+              doorType="interior"
+              selectedDoorId={selectedDoorId}
+              onSelect={(door) => setSelectedDoorId(door.id)}
+            />
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 pt-6 border-t">
               <div className="space-y-2">
                 <Label htmlFor="trim-color">Trim Color</Label>
                 <Input
@@ -221,24 +229,6 @@ export default function InteriorDesignPage() {
                   value={trimColor}
                   onChange={(e) => setTrimColor(e.target.value)}
                   placeholder="e.g., SW 7006 Extra White"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="door-style">Door Style</Label>
-                <Input
-                  id="door-style"
-                  value={doorStyle}
-                  onChange={(e) => setDoorStyle(e.target.value)}
-                  placeholder="e.g., 6-Panel, Shaker, Craftsman"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="door-color">Door Color</Label>
-                <Input
-                  id="door-color"
-                  value={doorColor}
-                  onChange={(e) => setDoorColor(e.target.value)}
-                  placeholder="e.g., Painted White"
                 />
               </div>
               <div className="space-y-2">

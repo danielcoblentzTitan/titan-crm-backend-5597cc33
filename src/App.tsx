@@ -15,6 +15,7 @@ import ExteriorDesignPage from "./pages/design/ExteriorDesignPage";
 import KitchenDesignPage from "./pages/design/KitchenDesignPage";
 import BathroomDesignPage from "./pages/design/BathroomDesignPage";
 import DesignPackagesPage from "./pages/design/DesignPackagesPage";
+import ProductManagementPage from "./pages/admin/ProductManagementPage";
 import { ErrorBoundary } from "./components/ui/error-boundary";
 import { Toaster } from "@/components/ui/toaster";
 import "./App.css";
@@ -103,6 +104,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <DesignPackagesPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/products"
+                element={
+                  <ProtectedRoute>
+                    <ProductManagementPage />
                   </ProtectedRoute>
                 }
               />

@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { MetalColorPicker } from "@/components/visual-selections/MetalColorPicker";
+import { DoorSelector } from "@/components/visual-selections/DoorSelector";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
@@ -19,6 +20,7 @@ export default function ExteriorDesignPage() {
   const [metalSidingColorId, setMetalSidingColorId] = useState("");
   const [metalRoofColorId, setMetalRoofColorId] = useState("");
   const [metalTrimColorId, setMetalTrimColorId] = useState("");
+  const [selectedEntryDoorId, setSelectedEntryDoorId] = useState("");
   const [porchPostStyle, setPorchPostStyle] = useState("");
   const [porchCeilingMaterial, setPorchCeilingMaterial] = useState("");
   const [exteriorDoorColor, setExteriorDoorColor] = useState("");
@@ -183,22 +185,19 @@ export default function ExteriorDesignPage() {
         {/* Doors & Windows Section */}
         <Card>
           <CardHeader>
-            <CardTitle>Doors & Windows</CardTitle>
+            <CardTitle>Entry Doors</CardTitle>
             <CardDescription>
-              Set colors and styles for exterior doors, windows, and garage doors
+              Select the default entry door style for the home
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="exterior-door-color">Exterior Door Color</Label>
-                <Input
-                  id="exterior-door-color"
-                  value={exteriorDoorColor}
-                  onChange={(e) => setExteriorDoorColor(e.target.value)}
-                  placeholder="e.g., Black, Mahogany"
-                />
-              </div>
+          <CardContent>
+            <DoorSelector
+              doorType="entry"
+              selectedDoorId={selectedEntryDoorId}
+              onSelect={(door) => setSelectedEntryDoorId(door.id)}
+            />
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 pt-6 border-t">
               <div className="space-y-2">
                 <Label htmlFor="window-color">Window Color</Label>
                 <Input
