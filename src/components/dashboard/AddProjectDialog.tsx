@@ -168,7 +168,7 @@ export function AddProjectDialog({ onProjectCreated }: AddProjectDialogProps) {
         onProjectCreated();
       }
 
-      navigate(`/project/${data.id}`);
+      navigate(`/projects/${data.id}`);
     } catch (error) {
       console.error("Error creating project:", error);
       toast({
