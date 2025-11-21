@@ -1,7 +1,10 @@
-import { Edit2, Trash2 } from "lucide-react";
+import { Edit2, Trash2, Shield, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface SelectionItem {
   id: string;
@@ -21,22 +24,75 @@ interface SelectionItem {
   notes_for_sub?: string;
   image_url?: string;
   trade?: string;
+  uses_master_default?: boolean;
+  is_overridden?: boolean;
+  master_field_name?: string;
+  product_id?: string;
+  product_type?: string;
 }
 
 interface SelectionItemCardProps {
   item: SelectionItem;
   onEdit: (item: SelectionItem) => void;
   onDelete: (id: string) => void;
+  onRefresh?: () => void;
 }
 
-export function SelectionItemCard({ item, onEdit, onDelete }: SelectionItemCardProps) {
+export function SelectionItemCard({ item, onEdit, onDelete, onRefresh }: SelectionItemCardProps) {
+  const { toast } = useToast();
+  const [isResetting, setIsResetting] = useState(false);
+
+  const handleResetToDefault = async () => {
+    setIsResetting(true);
+    try {
+      const { error } = await supabase
+        .from('selection_items')
+        .update({
+          is_overridden: false,
+          override_reason: null,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', item.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Selection reset to master default"
+      });
+
+      onRefresh?.();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to reset selection",
+        variant: "destructive"
+      });
+    } finally {
+      setIsResetting(false);
+    }
+  };
+
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className={`hover:shadow-md transition-shadow ${
+      item.uses_master_default && !item.is_overridden ? 'border-primary/30' : ''
+    }`}>
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 space-y-2">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <h4 className="font-semibold">{item.label}</h4>
+              {item.uses_master_default && !item.is_overridden && (
+                <Badge variant="secondary" className="bg-primary/10 text-primary">
+                  <Shield className="h-3 w-3 mr-1" />
+                  Master Default
+                </Badge>
+              )}
+              {item.is_overridden && (
+                <Badge variant="outline" className="text-orange-600 border-orange-600">
+                  Custom Selection
+                </Badge>
+              )}
               {item.is_upgrade && (
                 <Badge variant="secondary">Upgrade</Badge>
               )}
@@ -131,8 +187,21 @@ export function SelectionItemCard({ item, onEdit, onDelete }: SelectionItemCardP
             onClick={() => onEdit(item)}
           >
             <Edit2 className="h-3 w-3 mr-1" />
-            Edit
+            {item.uses_master_default && !item.is_overridden ? 'Override' : 'Edit'}
           </Button>
+          
+          {item.uses_master_default && item.is_overridden && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleResetToDefault}
+              disabled={isResetting}
+            >
+              <RefreshCw className={`h-3 w-3 mr-1 ${isResetting ? 'animate-spin' : ''}`} />
+              Reset to Default
+            </Button>
+          )}
+          
           <Button
             variant="outline"
             size="sm"

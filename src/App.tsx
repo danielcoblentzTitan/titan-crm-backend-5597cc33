@@ -11,6 +11,9 @@ import ProjectDashboard from "./pages/ProjectDashboard";
 import RoomSelectionsPage from "./pages/RoomSelectionsPage";
 import TradeViewPage from "./pages/TradeViewPage";
 import InteriorDesignPage from "./pages/design/InteriorDesignPage";
+import ExteriorDesignPage from "./pages/design/ExteriorDesignPage";
+import KitchenDesignPage from "./pages/design/KitchenDesignPage";
+import BathroomDesignPage from "./pages/design/BathroomDesignPage";
 import { ErrorBoundary } from "./components/ui/error-boundary";
 import { Toaster } from "@/components/ui/toaster";
 import "./App.css";
@@ -67,6 +70,30 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <InteriorDesignPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/design/exterior/:projectId"
+                element={
+                  <ProtectedRoute>
+                    <ExteriorDesignPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/design/kitchen/:projectId"
+                element={
+                  <ProtectedRoute>
+                    <KitchenDesignPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/design/bathroom/:projectId"
+                element={
+                  <ProtectedRoute>
+                    <BathroomDesignPage />
                   </ProtectedRoute>
                 }
               />
