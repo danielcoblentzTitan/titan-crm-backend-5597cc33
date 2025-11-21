@@ -11,6 +11,7 @@ import { AllowanceSummaryWidget } from "@/components/dashboard/AllowanceSummaryW
 import { ProgressWidget } from "@/components/dashboard/ProgressWidget";
 import { EditProjectDialog } from "@/components/dashboard/EditProjectDialog";
 import { EditAllowancesDialog } from "@/components/dashboard/EditAllowancesDialog";
+import { generateFullProjectPDF } from "@/utils/projectSummaryPdfGenerator";
 
 interface Project {
   id: string;
@@ -147,7 +148,17 @@ export default function ProjectDashboard() {
               <Settings className="h-4 w-4 mr-2" />
               Edit Allowances
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={async () => {
+              try {
+                await generateFullProjectPDF(projectId!);
+              } catch (error) {
+                toast({
+                  title: "Error",
+                  description: "Failed to generate PDF",
+                  variant: "destructive",
+                });
+              }
+            }}>
               <FileText className="h-4 w-4 mr-2" />
               Generate Full PDF
             </Button>
