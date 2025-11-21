@@ -102,11 +102,11 @@ export function AddRoomDialog({
       form.reset();
       onOpenChange(false);
       onSuccess();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error adding room:", error);
       toast({
         title: "Error",
-        description: "Failed to add room",
+        description: error.message || "Failed to add room",
         variant: "destructive",
       });
     }
