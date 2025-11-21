@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Home, PaintBucket, DoorOpen, Zap } from "lucide-react";
+import { Home, PaintBucket, DoorOpen, Zap, Building2, Palette } from "lucide-react";
 
 interface MasterSelectionsHubProps {
   projectId: string;
@@ -18,6 +18,20 @@ export const MasterSelectionsHub = ({ projectId }: MasterSelectionsHubProps) => 
     queryFn: async () => {
       const { data, error } = await supabase
         .from('master_interior_selections')
+        .select('*')
+        .eq('project_id', projectId)
+        .maybeSingle();
+
+      if (error) throw error;
+      return data;
+    }
+  });
+
+  const { data: masterExterior } = useQuery({
+    queryKey: ['master_exterior_selections', projectId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('master_exterior_selections')
         .select('*')
         .eq('project_id', projectId)
         .maybeSingle();
@@ -63,8 +77,16 @@ export const MasterSelectionsHub = ({ projectId }: MasterSelectionsHubProps) => 
     masterInterior?.default_ceiling_paint_color
   );
 
+  const isExteriorConfigured = !!(
+    masterExterior?.metal_siding_color ||
+    masterExterior?.metal_roof_color ||
+    masterExterior?.metal_trim_color
+  );
+
   return (
-    <Card>
+    <div className="grid gap-6 md:grid-cols-2">
+      {/* Interior Selections Card */}
+      <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
@@ -165,5 +187,100 @@ export const MasterSelectionsHub = ({ projectId }: MasterSelectionsHubProps) => 
         )}
       </CardContent>
     </Card>
+
+    {/* Exterior Selections Card */}
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              <Building2 className="h-5 w-5" />
+              Master Exterior Selections
+            </CardTitle>
+            <CardDescription>
+              Set default selections for building exterior
+            </CardDescription>
+          </div>
+          <Button onClick={() => navigate(`/design/exterior/${projectId}`)}>
+            {isExteriorConfigured ? 'Edit' : 'Configure'}
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent>
+        {!isExteriorConfigured ? (
+          <div className="text-center py-8 text-muted-foreground">
+            <p className="mb-4">No exterior selections configured yet</p>
+            <Button onClick={() => navigate(`/design/exterior/${projectId}`)}>
+              Get Started
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Metal Siding:</span>
+              <Badge variant="secondary">Configured</Badge>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Metal Roof:</span>
+              <Badge variant="secondary">Configured</Badge>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Trim Color:</span>
+              <Badge variant="secondary">Configured</Badge>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+
+    {/* Design Center Quick Links */}
+    <Card className="md:col-span-2">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Palette className="h-5 w-5" />
+          Design Center
+        </CardTitle>
+        <CardDescription>
+          Quick access to all design areas
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <Button
+            variant="outline"
+            className="h-auto py-4 flex flex-col items-center gap-2"
+            onClick={() => navigate(`/design/interior/${projectId}`)}
+          >
+            <Home className="h-5 w-5" />
+            <span className="text-xs">Interior</span>
+          </Button>
+          <Button
+            variant="outline"
+            className="h-auto py-4 flex flex-col items-center gap-2"
+            onClick={() => navigate(`/design/exterior/${projectId}`)}
+          >
+            <Building2 className="h-5 w-5" />
+            <span className="text-xs">Exterior</span>
+          </Button>
+          <Button
+            variant="outline"
+            className="h-auto py-4 flex flex-col items-center gap-2"
+            onClick={() => navigate(`/design/kitchen/${projectId}`)}
+          >
+            <PaintBucket className="h-5 w-5" />
+            <span className="text-xs">Kitchen</span>
+          </Button>
+          <Button
+            variant="outline"
+            className="h-auto py-4 flex flex-col items-center gap-2"
+            onClick={() => navigate(`/design/bathroom/${projectId}`)}
+          >
+            <DoorOpen className="h-5 w-5" />
+            <span className="text-xs">Bathroom</span>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
   );
 };

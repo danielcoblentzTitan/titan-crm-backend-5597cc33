@@ -310,6 +310,7 @@ export default function RoomSelectionsPage() {
                               item={item}
                               onEdit={handleEditSelection}
                               onDelete={handleDeleteSelection}
+                              onRefresh={loadData}
                             />
                           ))
                         )}
