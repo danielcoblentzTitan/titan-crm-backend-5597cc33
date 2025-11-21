@@ -3,20 +3,33 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Plus } from "lucide-react";
+import { ArrowLeft, Plus, FileText, Lock, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { RoomCard } from "@/components/dashboard/RoomCard";
 import { AddRoomDialog } from "@/components/dashboard/AddRoomDialog";
+import { AllowanceSummaryWidget } from "@/components/dashboard/AllowanceSummaryWidget";
+import { ProgressWidget } from "@/components/dashboard/ProgressWidget";
 
 interface Project {
   id: string;
   project_name: string;
+  project_number: string;
   client_name: string;
+  client_email: string;
+  phone: string;
   status: string;
   site_address: string;
   city: string;
   state: string;
+  zip: string;
   total_square_footage: number;
+  house_sq_ft: number;
+  garage_sq_ft: number;
+  bedrooms: number;
+  bathrooms: number;
+  stories: number;
+  wall_height: number;
+  build_type: string;
 }
 
 interface Room {
@@ -100,7 +113,7 @@ export default function ProjectDashboard() {
     <div className="min-h-screen bg-background">
       <header className="border-b bg-card sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
@@ -111,16 +124,44 @@ export default function ProjectDashboard() {
               </Button>
               <div>
                 <h1 className="text-2xl font-bold text-foreground">{project.project_name}</h1>
-                <p className="text-sm text-muted-foreground">{project.client_name}</p>
+                <p className="text-sm text-muted-foreground">
+                  {project.project_number && `${project.project_number} • `}
+                  {project.client_name}
+                  {project.phone && ` • ${project.phone}`}
+                </p>
               </div>
             </div>
+          </div>
+          
+          {/* Quick Actions */}
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" size="sm">
+              <Settings className="h-4 w-4 mr-2" />
+              Edit Project Info
+            </Button>
+            <Button variant="outline" size="sm">
+              <Settings className="h-4 w-4 mr-2" />
+              Edit Allowances
+            </Button>
+            <Button variant="outline" size="sm">
+              <FileText className="h-4 w-4 mr-2" />
+              Generate Full PDF
+            </Button>
+            <Button variant="outline" size="sm">
+              <FileText className="h-4 w-4 mr-2" />
+              Generate Trade Packets
+            </Button>
+            <Button variant="outline" size="sm">
+              <Lock className="h-4 w-4 mr-2" />
+              Lock Selections
+            </Button>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto px-4 py-6 space-y-6">
         {/* Project Info */}
-        <Card className="mb-6">
+        <Card>
           <CardHeader>
             <CardTitle>Project Details</CardTitle>
           </CardHeader>
@@ -128,7 +169,11 @@ export default function ProjectDashboard() {
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Status</p>
-                <p className="text-lg">{project.status || "Planning"}</p>
+                <p className="text-lg capitalize">{project.status || "Planning"}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Build Type</p>
+                <p className="text-lg capitalize">{project.build_type || "N/A"}</p>
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Location</p>
@@ -139,16 +184,52 @@ export default function ProjectDashboard() {
                 </p>
               </div>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Square Footage</p>
+                <p className="text-sm font-medium text-muted-foreground">Email</p>
+                <p className="text-lg text-sm">{project.client_email || "N/A"}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">House Size</p>
                 <p className="text-lg">
-                  {project.total_square_footage
-                    ? `${project.total_square_footage.toLocaleString()} sq ft`
+                  {project.house_sq_ft
+                    ? `${project.house_sq_ft.toLocaleString()} sq ft`
                     : "N/A"}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Garage Size</p>
+                <p className="text-lg">
+                  {project.garage_sq_ft
+                    ? `${project.garage_sq_ft.toLocaleString()} sq ft`
+                    : "N/A"}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Bedrooms</p>
+                <p className="text-lg">{project.bedrooms || "N/A"}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Bathrooms</p>
+                <p className="text-lg">{project.bathrooms || "N/A"}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Stories</p>
+                <p className="text-lg">{project.stories || "N/A"}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Wall Height</p>
+                <p className="text-lg">
+                  {project.wall_height ? `${project.wall_height} ft` : "N/A"}
                 </p>
               </div>
             </div>
           </CardContent>
         </Card>
+
+        {/* Dashboard Widgets */}
+        <div className="grid gap-6 md:grid-cols-2">
+          <AllowanceSummaryWidget projectId={projectId!} />
+          <ProgressWidget projectId={projectId!} />
+        </div>
 
         {/* Rooms Section */}
         <div className="mb-4 flex items-center justify-between">
@@ -170,7 +251,7 @@ export default function ProjectDashboard() {
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {rooms.map((room) => (
               <RoomCard
                 key={room.id}
