@@ -156,7 +156,7 @@ export function RoomCard({ room, projectId, onUpdate }: RoomCardProps) {
               </span>
             </div>
             <Button
-              onClick={() => navigate(`/project/${projectId}/room/${room.id}/selections`)}
+              onClick={() => navigate(`/project/${projectId}/room/${room.id}`)}
               className="w-full"
               variant="outline"
             >

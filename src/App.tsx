@@ -9,6 +9,7 @@ import Signup from "./pages/Signup";
 import ProjectList from "./pages/ProjectList";
 import ProjectDashboard from "./pages/ProjectDashboard";
 import RoomSelectionsPage from "./pages/RoomSelectionsPage";
+import TradeViewPage from "./pages/TradeViewPage";
 import { ErrorBoundary } from "./components/ui/error-boundary";
 import { Toaster } from "@/components/ui/toaster";
 import "./App.css";
@@ -45,10 +46,18 @@ function App() {
                 }
               />
               <Route
-                path="/project/:projectId/room/:roomId/selections"
+                path="/project/:projectId/room/:roomId"
                 element={
                   <ProtectedRoute>
                     <RoomSelectionsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/project/:projectId/trades"
+                element={
+                  <ProtectedRoute>
+                    <TradeViewPage />
                   </ProtectedRoute>
                 }
               />

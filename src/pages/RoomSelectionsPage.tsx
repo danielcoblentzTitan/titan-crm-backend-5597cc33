@@ -3,10 +3,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Plus } from "lucide-react";
+import { ArrowLeft, Plus, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { SelectionItemCard } from "@/components/dashboard/SelectionItemCard";
 import { AddSelectionDialog } from "@/components/dashboard/AddSelectionDialog";
+import { getTemplateForRoomType, createSelectionItemsFromTemplate } from "@/utils/selectionTemplates";
+import { toast as sonnerToast } from "sonner";
 import {
   Accordion,
   AccordionContent,
@@ -62,6 +64,7 @@ export default function RoomSelectionsPage() {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [editingItem, setEditingItem] = useState<SelectionItem | null>(null);
+  const [isAddingTemplate, setIsAddingTemplate] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -159,6 +162,39 @@ export default function RoomSelectionsPage() {
     }
   };
 
+  const handleAddTemplateItems = async () => {
+    if (!room || !categories) return;
+
+    setIsAddingTemplate(true);
+    try {
+      const categoryMap = categories.reduce((acc: Record<string, string>, cat: any) => {
+        acc[cat.name] = cat.id;
+        return acc;
+      }, {});
+
+      const templateItems = createSelectionItemsFromTemplate(
+        projectId!,
+        roomId!,
+        room.room_type,
+        categoryMap
+      );
+
+      const { error } = await supabase
+        .from("selection_items")
+        .insert(templateItems as any[]);
+
+      if (error) throw error;
+
+      sonnerToast.success("Standard items added successfully");
+      loadData();
+    } catch (error) {
+      console.error("Error adding template items:", error);
+      sonnerToast.error("Failed to add standard items");
+    } finally {
+      setIsAddingTemplate(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -182,26 +218,42 @@ export default function RoomSelectionsPage() {
     );
   }
 
+  const hasTemplateItems = getTemplateForRoomType(room.room_type).length > 0;
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b bg-card sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-4 mb-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => navigate(`/project/${projectId}`)}
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">{room.room_name}</h1>
-              <p className="text-sm text-muted-foreground">
-                {room.room_type && `${room.room_type} • `}
-                {room.length_ft && room.width_ft && 
-                  `${room.length_ft}' × ${room.width_ft}' • `}
-                {room.ceiling_height_ft && `${room.ceiling_height_ft}' ceiling`}
-              </p>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate(`/project/${projectId}`)}
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <div>
+                <h1 className="text-2xl font-bold text-foreground">{room.room_name}</h1>
+                <p className="text-sm text-muted-foreground">
+                  {room.room_type && `${room.room_type} • `}
+                  {room.length_ft && room.width_ft && 
+                    `${room.length_ft}' × ${room.width_ft}' • `}
+                  {room.ceiling_height_ft && `${room.ceiling_height_ft}' ceiling`}
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              {hasTemplateItems && (
+                <Button
+                  variant="outline"
+                  onClick={handleAddTemplateItems}
+                  disabled={isAddingTemplate}
+                >
+                  <Sparkles className="mr-2 h-4 w-4" />
+                  Add Standard Items
+                </Button>
+              )}
             </div>
           </div>
         </div>
