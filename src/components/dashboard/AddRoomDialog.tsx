@@ -42,16 +42,16 @@ const roomSchema = z.object({
 type RoomFormValues = z.infer<typeof roomSchema>;
 
 const ROOM_TYPES = [
-  "Kitchen",
-  "Living Room",
-  "Bedroom",
-  "Bathroom",
-  "Dining Room",
-  "Office",
-  "Laundry",
-  "Garage",
-  "Basement",
-  "Other",
+  { value: "kitchen", label: "Kitchen" },
+  { value: "living", label: "Living Room" },
+  { value: "bedroom", label: "Bedroom" },
+  { value: "bathroom", label: "Bathroom" },
+  { value: "hall", label: "Dining/Hall" },
+  { value: "office", label: "Office" },
+  { value: "utility", label: "Utility/Laundry" },
+  { value: "garage", label: "Garage" },
+  { value: "exterior", label: "Exterior" },
+  { value: "other", label: "Other" },
 ];
 
 interface AddRoomDialogProps {
@@ -148,8 +148,8 @@ export function AddRoomDialog({
                     </FormControl>
                     <SelectContent>
                       {ROOM_TYPES.map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {type}
+                        <SelectItem key={type.value} value={type.value}>
+                          {type.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
