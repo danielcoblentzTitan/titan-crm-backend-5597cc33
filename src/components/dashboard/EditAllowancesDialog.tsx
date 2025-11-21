@@ -77,35 +77,45 @@ export function EditAllowancesDialog({
 
   const onSubmit = async (data: FormData) => {
     try {
-      const { error } = await supabase
+      console.log("Form data before save:", data);
+      
+      const updateData = {
+        total_allowance_flooring: data.total_allowance_flooring ? parseFloat(data.total_allowance_flooring) : null,
+        total_allowance_cabinets: data.total_allowance_cabinets ? parseFloat(data.total_allowance_cabinets) : null,
+        total_allowance_countertops: data.total_allowance_countertops ? parseFloat(data.total_allowance_countertops) : null,
+        total_allowance_plumbing: data.total_allowance_plumbing ? parseFloat(data.total_allowance_plumbing) : null,
+        total_allowance_electrical: data.total_allowance_electrical ? parseFloat(data.total_allowance_electrical) : null,
+        total_allowance_lighting: data.total_allowance_lighting ? parseFloat(data.total_allowance_lighting) : null,
+        total_allowance_paint: data.total_allowance_paint ? parseFloat(data.total_allowance_paint) : null,
+        total_allowance_windows_doors: data.total_allowance_windows_doors ? parseFloat(data.total_allowance_windows_doors) : null,
+        total_allowance_misc: data.total_allowance_misc ? parseFloat(data.total_allowance_misc) : null,
+      };
+      
+      console.log("Sending update data:", updateData);
+
+      const { data: updatedProject, error } = await supabase
         .from("projects")
-        .update({
-          total_allowance_flooring: data.total_allowance_flooring ? parseFloat(data.total_allowance_flooring) : 0,
-          total_allowance_cabinets: data.total_allowance_cabinets ? parseFloat(data.total_allowance_cabinets) : 0,
-          total_allowance_countertops: data.total_allowance_countertops ? parseFloat(data.total_allowance_countertops) : 0,
-          total_allowance_plumbing: data.total_allowance_plumbing ? parseFloat(data.total_allowance_plumbing) : 0,
-          total_allowance_electrical: data.total_allowance_electrical ? parseFloat(data.total_allowance_electrical) : 0,
-          total_allowance_lighting: data.total_allowance_lighting ? parseFloat(data.total_allowance_lighting) : 0,
-          total_allowance_paint: data.total_allowance_paint ? parseFloat(data.total_allowance_paint) : 0,
-          total_allowance_windows_doors: data.total_allowance_windows_doors ? parseFloat(data.total_allowance_windows_doors) : 0,
-          total_allowance_misc: data.total_allowance_misc ? parseFloat(data.total_allowance_misc) : 0,
-        })
-        .eq("id", project.id);
+        .update(updateData)
+        .eq("id", project.id)
+        .select()
+        .single();
 
       if (error) throw error;
+      
+      console.log("Updated project data:", updatedProject);
 
       toast({
         title: "Success",
         description: "Allowances updated successfully",
       });
 
-      onSuccess();
       onOpenChange(false);
-    } catch (error) {
+      onSuccess();
+    } catch (error: any) {
       console.error("Error updating allowances:", error);
       toast({
         title: "Error",
-        description: "Failed to update allowances",
+        description: error.message || "Failed to update allowances",
         variant: "destructive",
       });
     }
