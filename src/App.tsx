@@ -1,11 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "./contexts/AuthContext";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import ProjectList from "./pages/ProjectList";
+import ProjectDashboard from "./pages/ProjectDashboard";
 import { ErrorBoundary } from "./components/ui/error-boundary";
 import { Toaster } from "@/components/ui/toaster";
 import "./App.css";
-
 
 const queryClient = new QueryClient();
 
@@ -13,16 +18,38 @@ function App() {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <Router>
-          <Routes>
-            {/* Design selections route */}
-            <Route path="/" element={<Index />} />
-            
-            {/* 404 fallback */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Router>
-        <Toaster />
+        <AuthProvider>
+          <Router>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<Index />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              
+              {/* Protected routes */}
+              <Route
+                path="/projects"
+                element={
+                  <ProtectedRoute allowedRoles={["builder"]}>
+                    <ProjectList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/project/:projectId"
+                element={
+                  <ProtectedRoute allowedRoles={["builder"]}>
+                    <ProjectDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              
+              {/* 404 fallback */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Router>
+          <Toaster />
+        </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>
   );
