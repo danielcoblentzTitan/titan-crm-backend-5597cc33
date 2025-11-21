@@ -509,7 +509,7 @@ const handler = async (req: Request): Promise<Response> => {
       }
       
       // Add project description if it exists and is different from additional info
-      if (projectDescription && projectDescription !== additionalInfo && projectDescription !== additionalBuildingInfo) {
+      if (projectDescription && projectDescription !== additionalInfo && projectDescription !== additionalProjectNotes) {
         notesSections.push(`Project Description: ${projectDescription}`);
       }
     } else {
