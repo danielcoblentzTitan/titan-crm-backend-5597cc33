@@ -1,0 +1,1 @@
+UPDATE invoices SET status = 'Draft' WHERE invoice_number = 'Fulford - Invoice 1' AND notes LIKE '%Lumber Delivery%';

@@ -1,0 +1,314 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    /* Brand colors - Titan Buildings blue theme */
+    --primary: 214 83% 21%;
+    --primary-foreground: 210 40% 98%;
+    --primary-variant: 214 83% 28%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 214 65% 92%;
+    --accent-foreground: 214 84% 28%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 210 40% 98%;
+
+    --warning: 43 89% 49%;
+    --warning-foreground: 222.2 84% 4.9%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 214 84% 38%;
+
+    --radius: 0.5rem;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-variant)));
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--accent)));
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(var(--primary) / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(var(--primary) / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(var(--primary) / 0.1);
+    --shadow-xl: 0 20px 25px -5px hsl(var(--primary) / 0.1);
+
+    /* Animations */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    
+    /* Dark mode brand colors */
+    --primary: 214 84% 65%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --primary-variant: 214 70% 70%;
+    
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 50.6%;
+    --destructive-foreground: 210 40% 98%;
+    --success: 142 76% 56%;
+    --success-foreground: 222.2 84% 4.9%;
+    --warning: 43 89% 69%;
+    --warning-foreground: 222.2 84% 4.9%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 214 84% 65%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Prevent horizontal scrolling on mobile */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Improved form controls for mobile */
+  input, select, textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  @media (max-width: 768px) {
+    input, select, textarea, button {
+      font-size: 16px;
+      min-height: 44px; /* Touch-friendly minimum */
+    }
+  }
+}
+
+@layer components {
+  /* Mobile-optimized container */
+  .container-mobile {
+    @apply w-full mx-auto px-4 sm:px-6 lg:px-8;
+    max-width: 100vw;
+  }
+
+  /* Mobile-friendly grid layouts */
+  .grid-mobile {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6;
+  }
+
+  .grid-mobile-2 {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6;
+  }
+
+  /* Mobile-optimized card spacing */
+  .card-mobile {
+    @apply rounded-lg border bg-card text-card-foreground shadow-sm p-4 sm:p-6;
+  }
+
+  /* Mobile button groups */
+  .button-group-mobile {
+    @apply flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2;
+  }
+
+  .button-group-mobile > * {
+    @apply w-full sm:w-auto;
+  }
+
+  /* Touch-friendly interactive elements */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+  }
+
+  /* Mobile-friendly navigation */
+  .nav-mobile {
+    @apply flex overflow-x-auto scrollbar-hide;
+  }
+
+  .nav-mobile::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Mobile table wrapper */
+  .table-mobile {
+    @apply overflow-x-auto -mx-4 sm:mx-0;
+  }
+
+  .table-mobile table {
+    @apply min-w-full;
+  }
+
+  /* Mobile-specific text sizing */
+  @media (max-width: 640px) {
+    .text-mobile-xl {
+      @apply text-xl;
+    }
+    
+    .text-mobile-lg {
+      @apply text-lg;
+    }
+    
+    .text-mobile-base {
+      @apply text-base;
+    }
+    
+    .text-mobile-sm {
+      @apply text-sm;
+    }
+  }
+
+  /* Mobile spacing utilities */
+  .space-mobile {
+    @apply space-y-4 sm:space-y-6;
+  }
+
+  .gap-mobile {
+    @apply gap-4 sm:gap-6;
+  }
+
+  /* Mobile-responsive flex direction */
+  .flex-mobile {
+    @apply flex flex-col sm:flex-row;
+  }
+
+  .flex-mobile-reverse {
+    @apply flex flex-col-reverse sm:flex-row;
+  }
+
+  /* Mobile dialog/modal optimizations */
+  @media (max-width: 640px) {
+    .dialog-mobile {
+      @apply m-0 h-full w-full max-w-none rounded-none;
+    }
+  }
+
+  /* Mobile-friendly forms */
+  .form-mobile {
+    @apply space-y-4;
+  }
+
+  .form-mobile .form-row {
+    @apply flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4;
+  }
+
+  .form-mobile .form-row > * {
+    @apply flex-1;
+  }
+
+  /* Mobile header */
+  .header-mobile {
+    @apply sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b;
+  }
+
+  /* Mobile sidebar */
+  .sidebar-mobile {
+    @apply fixed inset-y-0 left-0 z-50 w-full max-w-sm transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0;
+  }
+
+  /* Mobile bottom navigation */
+  .bottom-nav-mobile {
+    @apply fixed bottom-0 left-0 right-0 z-50 bg-background border-t sm:hidden;
+  }
+
+  /* Utility for hiding scrollbars */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Safe area support for iOS devices including iPad Pro */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .pb-safe-or-4 {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Ensure bottom navigation is always visible on all devices */
+  @supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .bottom-nav-safe {
+      padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)) !important;
+    }
+  }
+
+  /* iPad Pro specific fixes */
+  @media screen and (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
+    .ipad-pro-fix {
+      padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    }
+  }
+
+  @media screen and (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+    .ipad-pro-fix {
+      padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+    }
+  }
+  
+}

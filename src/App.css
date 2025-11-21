@@ -1,0 +1,269 @@
+#root {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  text-align: left;
+}
+
+/* Mobile-first responsive design */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Tablet and up */
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+/* Ensure images are responsive */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Mobile-optimized text */
+@media (max-width: 640px) {
+  h1 {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  
+  h3 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  
+  p {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+
+/* Touch-friendly interactive elements */
+@media (max-width: 768px) {
+  button {
+    min-height: 44px;
+    padding: 0.75rem 1rem;
+  }
+  
+  input {
+    min-height: 44px;
+    padding: 0.75rem;
+  }
+  
+  select {
+    min-height: 44px;
+    padding: 0.75rem;
+  }
+}
+
+/* Logo and animations */
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+@media (max-width: 640px) {
+  .logo {
+    height: 4em;
+    padding: 1em;
+  }
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 1.5em;
+  }
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* Ensure proper spacing on mobile */
+@media (max-width: 640px) {
+  section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  .space-y-4 > * + * {
+    margin-top: 1rem;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 1.5rem;
+  }
+  
+  .space-y-8 > * + * {
+    margin-top: 2rem;
+  }
+}
+
+/* Smooth scrolling for mobile */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent horizontal scrolling */
+body {
+  overflow-x: hidden;
+}
+
+/* Enhanced mobile-friendly styles */
+@media (max-width: 768px) {
+  /* Workflow Dashboard Mobile Styles */
+  .workflow-dashboard {
+    padding: 1rem;
+  }
+  
+  .workflow-card {
+    margin-bottom: 1rem;
+  }
+  
+  .workflow-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .workflow-item .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Better card spacing on mobile */
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  /* Mobile-optimized form layouts */
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  /* Better button spacing */
+  .button-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .button-group button {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Improved table responsiveness */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Better spacing for content */
+  .content-section {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Mobile-friendly navigation */
+  .nav-tabs {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .nav-tab {
+    flex: 1;
+    min-width: fit-content;
+    text-align: center;
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (max-width: 768px) and (pointer: coarse) {
+  /* Larger touch targets */
+  button, .btn, a[role="button"] {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 0.75rem 1rem;
+  }
+  
+  /* Better spacing for interactive elements */
+  .interactive-element {
+    margin: 0.5rem 0;
+  }
+  
+  /* Improved select dropdowns */
+  select {
+    min-height: 48px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  input {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}

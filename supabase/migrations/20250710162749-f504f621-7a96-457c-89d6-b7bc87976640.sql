@@ -1,0 +1,8 @@
+-- Temporarily disable RLS for development on key tables
+ALTER TABLE public.leads DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.team_members DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.customers DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.projects DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.estimates DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.lead_activities DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.lead_notifications DISABLE ROW LEVEL SECURITY;
