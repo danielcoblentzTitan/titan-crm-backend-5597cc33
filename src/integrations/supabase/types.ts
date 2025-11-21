@@ -57,18 +57,26 @@ export type Database = {
       }
       projects: {
         Row: {
+          bathrooms: number | null
+          bedrooms: number | null
+          build_type: string | null
           city: string | null
           client_email: string | null
           client_name: string
           created_at: string | null
           created_by: string | null
+          garage_sq_ft: number | null
+          house_sq_ft: number | null
           id: string
+          lot_size: number | null
+          phone: string | null
           project_name: string
           project_number: string | null
           running_total_estimate: number | null
           site_address: string | null
           state: string | null
           status: string | null
+          stories: number | null
           total_allowance_cabinets: number | null
           total_allowance_countertops: number | null
           total_allowance_electrical: number | null
@@ -80,21 +88,30 @@ export type Database = {
           total_allowance_windows_doors: number | null
           total_square_footage: number | null
           updated_at: string | null
+          wall_height: number | null
           zip: string | null
         }
         Insert: {
+          bathrooms?: number | null
+          bedrooms?: number | null
+          build_type?: string | null
           city?: string | null
           client_email?: string | null
           client_name: string
           created_at?: string | null
           created_by?: string | null
+          garage_sq_ft?: number | null
+          house_sq_ft?: number | null
           id?: string
+          lot_size?: number | null
+          phone?: string | null
           project_name: string
           project_number?: string | null
           running_total_estimate?: number | null
           site_address?: string | null
           state?: string | null
           status?: string | null
+          stories?: number | null
           total_allowance_cabinets?: number | null
           total_allowance_countertops?: number | null
           total_allowance_electrical?: number | null
@@ -106,21 +123,30 @@ export type Database = {
           total_allowance_windows_doors?: number | null
           total_square_footage?: number | null
           updated_at?: string | null
+          wall_height?: number | null
           zip?: string | null
         }
         Update: {
+          bathrooms?: number | null
+          bedrooms?: number | null
+          build_type?: string | null
           city?: string | null
           client_email?: string | null
           client_name?: string
           created_at?: string | null
           created_by?: string | null
+          garage_sq_ft?: number | null
+          house_sq_ft?: number | null
           id?: string
+          lot_size?: number | null
+          phone?: string | null
           project_name?: string
           project_number?: string | null
           running_total_estimate?: number | null
           site_address?: string | null
           state?: string | null
           status?: string | null
+          stories?: number | null
           total_allowance_cabinets?: number | null
           total_allowance_countertops?: number | null
           total_allowance_electrical?: number | null
@@ -132,6 +158,7 @@ export type Database = {
           total_allowance_windows_doors?: number | null
           total_square_footage?: number | null
           updated_at?: string | null
+          wall_height?: number | null
           zip?: string | null
         }
         Relationships: []
@@ -380,6 +407,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      ensure_admin_role: { Args: { user_email: string }; Returns: undefined }
+      generate_project_number: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
