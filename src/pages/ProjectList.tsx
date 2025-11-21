@@ -125,7 +125,7 @@ export default function ProjectList() {
               <Card
                 key={project.id}
                 className="cursor-pointer hover:shadow-lg transition-shadow"
-                onClick={() => navigate(`/project/${project.id}`)}
+                onClick={() => navigate(`/projects/${project.id}`)}
               >
                 <CardHeader>
                   <CardTitle className="text-lg">{project.project_name}</CardTitle>
