@@ -139,6 +139,57 @@ export type Database = {
         }
         Relationships: []
       }
+      door_products: {
+        Row: {
+          color_options: string[] | null
+          created_at: string | null
+          description: string | null
+          door_type: string
+          glass_options: string[] | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          material: string | null
+          name: string
+          price_tier: string | null
+          sort_order: number | null
+          style: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          color_options?: string[] | null
+          created_at?: string | null
+          description?: string | null
+          door_type: string
+          glass_options?: string[] | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          material?: string | null
+          name: string
+          price_tier?: string | null
+          sort_order?: number | null
+          style?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          color_options?: string[] | null
+          created_at?: string | null
+          description?: string | null
+          door_type?: string
+          glass_options?: string[] | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          material?: string | null
+          name?: string
+          price_tier?: string | null
+          sort_order?: number | null
+          style?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       fixture_products: {
         Row: {
           brand: string | null
@@ -418,6 +469,7 @@ export type Database = {
           finish_type: string | null
           hex_color: string | null
           id: string
+          image_url: string | null
           is_active: boolean | null
           price_tier: string | null
           product_code: string | null
@@ -431,6 +483,7 @@ export type Database = {
           finish_type?: string | null
           hex_color?: string | null
           id?: string
+          image_url?: string | null
           is_active?: boolean | null
           price_tier?: string | null
           product_code?: string | null
@@ -444,6 +497,7 @@ export type Database = {
           finish_type?: string | null
           hex_color?: string | null
           id?: string
+          image_url?: string | null
           is_active?: boolean | null
           price_tier?: string | null
           product_code?: string | null
