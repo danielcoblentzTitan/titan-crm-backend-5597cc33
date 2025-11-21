@@ -13,6 +13,7 @@ import { EditProjectDialog } from "@/components/dashboard/EditProjectDialog";
 import { EditAllowancesDialog } from "@/components/dashboard/EditAllowancesDialog";
 import { VersionManagement } from "@/components/dashboard/VersionManagement";
 import { generateFullProjectPDF } from "@/utils/projectSummaryPdfGenerator";
+import { MasterSelectionsHub } from "@/components/master-selections/MasterSelectionsHub";
 
 interface Project {
   id: string;
@@ -245,6 +246,9 @@ export default function ProjectDashboard() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Master Selections Hub */}
+        <MasterSelectionsHub projectId={projectId!} />
 
         {/* Dashboard Widgets */}
         <div className="grid gap-6 md:grid-cols-2">

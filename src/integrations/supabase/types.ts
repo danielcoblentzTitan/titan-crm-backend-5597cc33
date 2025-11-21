@@ -55,6 +55,271 @@ export type Database = {
           },
         ]
       }
+      flooring_products: {
+        Row: {
+          brand: string | null
+          color_family: string | null
+          created_at: string | null
+          description: string | null
+          finish_type: string | null
+          id: string
+          is_active: boolean | null
+          material_type: string | null
+          name: string
+          price_tier: string | null
+          product_line: string | null
+          room_image_url: string | null
+          sort_order: number | null
+          texture_image_url: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          brand?: string | null
+          color_family?: string | null
+          created_at?: string | null
+          description?: string | null
+          finish_type?: string | null
+          id?: string
+          is_active?: boolean | null
+          material_type?: string | null
+          name: string
+          price_tier?: string | null
+          product_line?: string | null
+          room_image_url?: string | null
+          sort_order?: number | null
+          texture_image_url?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          brand?: string | null
+          color_family?: string | null
+          created_at?: string | null
+          description?: string | null
+          finish_type?: string | null
+          id?: string
+          is_active?: boolean | null
+          material_type?: string | null
+          name?: string
+          price_tier?: string | null
+          product_line?: string | null
+          room_image_url?: string | null
+          sort_order?: number | null
+          texture_image_url?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      master_exterior_selections: {
+        Row: {
+          concrete_finish_type: string | null
+          created_at: string | null
+          exterior_door_color: string | null
+          exterior_door_style: string | null
+          exterior_lighting_finish: string | null
+          exterior_lighting_style: string | null
+          garage_door_color: string | null
+          garage_door_style: string | null
+          id: string
+          metal_roof_color: string | null
+          metal_roof_type: string | null
+          metal_siding_color: string | null
+          metal_siding_type: string | null
+          metal_trim_color: string | null
+          notes: string | null
+          porch_ceiling_color: string | null
+          porch_ceiling_material: string | null
+          porch_post_color: string | null
+          porch_post_style: string | null
+          project_id: string
+          stone_wainscot_color: string | null
+          stone_wainscot_type: string | null
+          updated_at: string | null
+          window_color: string | null
+          window_style: string | null
+        }
+        Insert: {
+          concrete_finish_type?: string | null
+          created_at?: string | null
+          exterior_door_color?: string | null
+          exterior_door_style?: string | null
+          exterior_lighting_finish?: string | null
+          exterior_lighting_style?: string | null
+          garage_door_color?: string | null
+          garage_door_style?: string | null
+          id?: string
+          metal_roof_color?: string | null
+          metal_roof_type?: string | null
+          metal_siding_color?: string | null
+          metal_siding_type?: string | null
+          metal_trim_color?: string | null
+          notes?: string | null
+          porch_ceiling_color?: string | null
+          porch_ceiling_material?: string | null
+          porch_post_color?: string | null
+          porch_post_style?: string | null
+          project_id: string
+          stone_wainscot_color?: string | null
+          stone_wainscot_type?: string | null
+          updated_at?: string | null
+          window_color?: string | null
+          window_style?: string | null
+        }
+        Update: {
+          concrete_finish_type?: string | null
+          created_at?: string | null
+          exterior_door_color?: string | null
+          exterior_door_style?: string | null
+          exterior_lighting_finish?: string | null
+          exterior_lighting_style?: string | null
+          garage_door_color?: string | null
+          garage_door_style?: string | null
+          id?: string
+          metal_roof_color?: string | null
+          metal_roof_type?: string | null
+          metal_siding_color?: string | null
+          metal_siding_type?: string | null
+          metal_trim_color?: string | null
+          notes?: string | null
+          porch_ceiling_color?: string | null
+          porch_ceiling_material?: string | null
+          porch_post_color?: string | null
+          porch_post_style?: string | null
+          project_id?: string
+          stone_wainscot_color?: string | null
+          stone_wainscot_type?: string | null
+          updated_at?: string | null
+          window_color?: string | null
+          window_style?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "master_exterior_selections_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      master_interior_selections: {
+        Row: {
+          created_at: string | null
+          default_baseboard_style: string | null
+          default_ceiling_paint_brand: string | null
+          default_ceiling_paint_color: string | null
+          default_door_color: string | null
+          default_door_hardware_finish: string | null
+          default_door_style: string | null
+          default_flooring_color: string | null
+          default_flooring_finish: string | null
+          default_flooring_material: string | null
+          default_flooring_product_id: string | null
+          default_outlet_switch_color: string | null
+          default_trim_color: string | null
+          default_trim_style: string | null
+          default_wall_paint_brand: string | null
+          default_wall_paint_color: string | null
+          id: string
+          notes: string | null
+          project_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          default_baseboard_style?: string | null
+          default_ceiling_paint_brand?: string | null
+          default_ceiling_paint_color?: string | null
+          default_door_color?: string | null
+          default_door_hardware_finish?: string | null
+          default_door_style?: string | null
+          default_flooring_color?: string | null
+          default_flooring_finish?: string | null
+          default_flooring_material?: string | null
+          default_flooring_product_id?: string | null
+          default_outlet_switch_color?: string | null
+          default_trim_color?: string | null
+          default_trim_style?: string | null
+          default_wall_paint_brand?: string | null
+          default_wall_paint_color?: string | null
+          id?: string
+          notes?: string | null
+          project_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          default_baseboard_style?: string | null
+          default_ceiling_paint_brand?: string | null
+          default_ceiling_paint_color?: string | null
+          default_door_color?: string | null
+          default_door_hardware_finish?: string | null
+          default_door_style?: string | null
+          default_flooring_color?: string | null
+          default_flooring_finish?: string | null
+          default_flooring_material?: string | null
+          default_flooring_product_id?: string | null
+          default_outlet_switch_color?: string | null
+          default_trim_color?: string | null
+          default_trim_style?: string | null
+          default_wall_paint_brand?: string | null
+          default_wall_paint_color?: string | null
+          id?: string
+          notes?: string | null
+          project_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "master_interior_selections_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      metal_color_products: {
+        Row: {
+          category: string | null
+          color_name: string
+          created_at: string | null
+          finish_type: string | null
+          hex_color: string | null
+          id: string
+          is_active: boolean | null
+          price_tier: string | null
+          product_code: string | null
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          category?: string | null
+          color_name: string
+          created_at?: string | null
+          finish_type?: string | null
+          hex_color?: string | null
+          id?: string
+          is_active?: boolean | null
+          price_tier?: string | null
+          product_code?: string | null
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string | null
+          color_name?: string
+          created_at?: string | null
+          finish_type?: string | null
+          hex_color?: string | null
+          id?: string
+          is_active?: boolean | null
+          price_tier?: string | null
+          product_code?: string | null
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       projects: {
         Row: {
           bathrooms: number | null
@@ -163,6 +428,39 @@ export type Database = {
         }
         Relationships: []
       }
+      room_type_rules: {
+        Row: {
+          created_at: string | null
+          display_name: string
+          id: string
+          is_active: boolean | null
+          json_rules: Json
+          room_type: string
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          display_name: string
+          id?: string
+          is_active?: boolean | null
+          json_rules: Json
+          room_type: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          display_name?: string
+          id?: string
+          is_active?: boolean | null
+          json_rules?: Json
+          room_type?: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       rooms: {
         Row: {
           ceiling_height_ft: number | null
@@ -250,12 +548,17 @@ export type Database = {
           finish: string | null
           id: string
           image_url: string | null
+          is_overridden: boolean | null
           is_standard_option: boolean | null
           is_upgrade: boolean | null
           label: string
+          master_field_name: string | null
           material_type: string | null
           model_or_sku: string | null
           notes_for_sub: string | null
+          override_reason: string | null
+          product_id: string | null
+          product_type: string | null
           project_id: string
           quantity: number | null
           room_id: string
@@ -265,6 +568,7 @@ export type Database = {
           unit_cost_allowance: number | null
           updated_at: string | null
           upgrade_cost: number | null
+          uses_master_default: boolean | null
         }
         Insert: {
           brand?: string | null
@@ -275,12 +579,17 @@ export type Database = {
           finish?: string | null
           id?: string
           image_url?: string | null
+          is_overridden?: boolean | null
           is_standard_option?: boolean | null
           is_upgrade?: boolean | null
           label: string
+          master_field_name?: string | null
           material_type?: string | null
           model_or_sku?: string | null
           notes_for_sub?: string | null
+          override_reason?: string | null
+          product_id?: string | null
+          product_type?: string | null
           project_id: string
           quantity?: number | null
           room_id: string
@@ -290,6 +599,7 @@ export type Database = {
           unit_cost_allowance?: number | null
           updated_at?: string | null
           upgrade_cost?: number | null
+          uses_master_default?: boolean | null
         }
         Update: {
           brand?: string | null
@@ -300,12 +610,17 @@ export type Database = {
           finish?: string | null
           id?: string
           image_url?: string | null
+          is_overridden?: boolean | null
           is_standard_option?: boolean | null
           is_upgrade?: boolean | null
           label?: string
+          master_field_name?: string | null
           material_type?: string | null
           model_or_sku?: string | null
           notes_for_sub?: string | null
+          override_reason?: string | null
+          product_id?: string | null
+          product_type?: string | null
           project_id?: string
           quantity?: number | null
           room_id?: string
@@ -315,6 +630,7 @@ export type Database = {
           unit_cost_allowance?: number | null
           updated_at?: string | null
           upgrade_cost?: number | null
+          uses_master_default?: boolean | null
         }
         Relationships: [
           {

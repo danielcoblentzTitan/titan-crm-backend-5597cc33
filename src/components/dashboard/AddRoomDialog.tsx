@@ -29,6 +29,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { roomInitializationService } from "@/services/roomInitializationService";
 
 const roomSchema = z.object({
   room_name: z.string().min(1, "Room name is required"),
@@ -82,7 +83,7 @@ export function AddRoomDialog({
 
   const onSubmit = async (values: RoomFormValues) => {
     try {
-      const { error } = await supabase.from("rooms").insert({
+      const { data: newRoom, error } = await supabase.from("rooms").insert({
         project_id: projectId,
         room_name: values.room_name,
         room_type: values.room_type || null,
@@ -90,9 +91,37 @@ export function AddRoomDialog({
         width_ft: values.width_ft ? parseFloat(values.width_ft) : null,
         ceiling_height_ft: values.ceiling_height_ft ? parseFloat(values.ceiling_height_ft) : null,
         notes_general: values.notes_general || null,
-      });
+      }).select().single();
 
       if (error) throw error;
+
+      // Initialize room selections based on room type
+      if (newRoom && values.room_type) {
+        try {
+          // Fetch categories to create category map
+          const { data: categories, error: catError } = await supabase
+            .from('selection_categories')
+            .select('id, name');
+          
+          if (catError) throw catError;
+
+          const categoryMap: Record<string, string> = {};
+          categories?.forEach(cat => {
+            categoryMap[cat.name] = cat.id;
+          });
+
+          // Initialize room selections
+          await roomInitializationService.initializeRoomSelections(
+            projectId,
+            newRoom.id,
+            values.room_type,
+            categoryMap
+          );
+        } catch (initError) {
+          console.error('Error initializing room selections:', initError);
+          // Don't fail the room creation if initialization fails
+        }
+      }
 
       toast({
         title: "Success",

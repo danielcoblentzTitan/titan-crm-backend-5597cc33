@@ -10,6 +10,7 @@ import ProjectList from "./pages/ProjectList";
 import ProjectDashboard from "./pages/ProjectDashboard";
 import RoomSelectionsPage from "./pages/RoomSelectionsPage";
 import TradeViewPage from "./pages/TradeViewPage";
+import InteriorDesignPage from "./pages/design/InteriorDesignPage";
 import { ErrorBoundary } from "./components/ui/error-boundary";
 import { Toaster } from "@/components/ui/toaster";
 import "./App.css";
@@ -58,6 +59,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <TradeViewPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/design/interior/:projectId"
+                element={
+                  <ProtectedRoute>
+                    <InteriorDesignPage />
                   </ProtectedRoute>
                 }
               />

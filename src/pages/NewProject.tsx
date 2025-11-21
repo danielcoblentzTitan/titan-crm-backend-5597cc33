@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft } from "lucide-react";
+import { masterSelectionsService } from "@/services/masterSelectionsService";
 
 export default function NewProject() {
   const navigate = useNavigate();
@@ -35,6 +36,14 @@ export default function NewProject() {
         .single();
 
       if (error) throw error;
+
+      // Create master selections for the new project
+      try {
+        await masterSelectionsService.createMasterSelectionsForProject(data.id);
+      } catch (masterError) {
+        console.error('Error creating master selections:', masterError);
+        // Don't fail the project creation if master selections fail
+      }
 
       toast({
         title: "Success",
