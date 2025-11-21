@@ -5,8 +5,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Search, Plus, Home } from "lucide-react";
+import { Search, Home } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { AddProjectDialog } from "@/components/dashboard/AddProjectDialog";
 
 interface Project {
   id: string;
@@ -77,10 +78,16 @@ export default function ProjectList() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Home className="h-6 w-6 text-primary" />
-              <h1 className="text-2xl font-bold text-foreground">Projects</h1>
+              <div>
+                <h1 className="text-2xl font-bold text-foreground">Titan Buildings</h1>
+                <p className="text-sm text-muted-foreground">Customer Project Dashboard</p>
+              </div>
             </div>
-            <Button onClick={() => navigate("/")} variant="outline">
-              Back to Home
+            <Button onClick={async () => {
+              await supabase.auth.signOut();
+              navigate("/");
+            }} variant="outline">
+              Sign Out
             </Button>
           </div>
         </div>
@@ -98,23 +105,17 @@ export default function ProjectList() {
               className="pl-9"
             />
           </div>
-          <Button onClick={() => navigate("/projects/new")}>
-            <Plus className="h-4 w-4 mr-2" />
-            New Project
-          </Button>
+          <AddProjectDialog onProjectCreated={loadProjects} />
         </div>
 
         {filteredProjects.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
               <p className="text-muted-foreground mb-4">
-                {searchQuery ? "No projects found" : "No projects yet"}
+                {searchQuery ? "No customer projects found" : "No customer projects yet"}
               </p>
               {!searchQuery && (
-                <Button onClick={() => navigate("/projects/new")}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create Your First Project
-                </Button>
+                <AddProjectDialog onProjectCreated={loadProjects} />
               )}
             </CardContent>
           </Card>

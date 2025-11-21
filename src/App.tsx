@@ -30,7 +30,7 @@ function App() {
               <Route
                 path="/projects"
                 element={
-                  <ProtectedRoute allowedRoles={["builder"]}>
+                  <ProtectedRoute>
                     <ProjectList />
                   </ProtectedRoute>
                 }
@@ -38,7 +38,7 @@ function App() {
               <Route
                 path="/project/:projectId"
                 element={
-                  <ProtectedRoute allowedRoles={["builder"]}>
+                  <ProtectedRoute>
                     <ProjectDashboard />
                   </ProtectedRoute>
                 }
