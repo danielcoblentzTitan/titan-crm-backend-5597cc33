@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Trash2, Edit2, FolderOpen } from "lucide-react";
+import { Trash2, Edit2, FolderOpen, FileText } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { EditRoomDialog } from "./EditRoomDialog";
+import { generateRoomPDF } from "@/utils/roomPdfGenerator";
 
 interface Room {
   id: string;
@@ -108,6 +109,24 @@ export function RoomCard({ room, projectId, onUpdate }: RoomCardProps) {
               )}
             </div>
             <div className="flex gap-1">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={async () => {
+                  try {
+                    await generateRoomPDF(projectId, room.id);
+                  } catch (error) {
+                    toast({
+                      title: "Error",
+                      description: "Failed to generate room PDF",
+                      variant: "destructive",
+                    });
+                  }
+                }}
+                title="Generate Room PDF"
+              >
+                <FileText className="h-4 w-4" />
+              </Button>
               <Button
                 variant="ghost"
                 size="icon"
