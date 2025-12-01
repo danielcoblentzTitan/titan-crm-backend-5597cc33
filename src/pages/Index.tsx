@@ -1,32 +1,30 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import DesignSelections from "@/components/DesignSelections";
 
-export default function Index() {
+const Index = () => {
+  const [searchParams] = useSearchParams();
+  const projectId = searchParams.get('projectId') || 'demo-project';
+
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="max-w-md w-full space-y-8 p-8">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Project Selection Manager
-          </h1>
-          <p className="text-muted-foreground mb-8">
-            Manage your construction projects, rooms, and material selections
-          </p>
-          <div className="space-y-4">
-            <Link 
-              to="/login"
-              className="block w-full py-3 px-4 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-            >
-              Login
-            </Link>
-            <Link 
-              to="/signup"
-              className="block w-full py-3 px-4 border border-border text-foreground rounded-md hover:bg-muted transition-colors"
-            >
-              Sign Up
-            </Link>
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b bg-card sticky top-0 z-50 shadow-sm">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <h1 className="text-2xl font-bold text-foreground">Design Selections</h1>
+            </div>
           </div>
         </div>
-      </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="container mx-auto">
+        <DesignSelections projectId={projectId} />
+      </main>
     </div>
   );
-}
+};
+
+export default Index;

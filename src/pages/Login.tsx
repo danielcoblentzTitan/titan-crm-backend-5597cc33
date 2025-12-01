@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,6 +12,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Users, Building, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user, signIn, signUp } = useAuth();
@@ -18,6 +20,9 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showSignupPassword, setShowSignupPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const inviteToken = searchParams.get('invite');
+  const loginType = searchParams.get('type') || 'client';
 
   // Form states
   const [loginData, setLoginData] = useState({
@@ -33,10 +38,23 @@ const Login = () => {
   });
 
   useEffect(() => {
+    // Only redirect if user is already logged in AND they're on the login page
+    // This prevents redirects when refreshing other pages
     if (user && window.location.pathname === '/login') {
-      navigate('/projects');
+      if (user.user_metadata?.role === 'builder') {
+        navigate('/dashboard');
+      } else {
+        navigate('/customer-portal');
+      }
     }
   }, [user, navigate]);
+
+  useEffect(() => {
+    // If there's an invite token, redirect to invite signup page
+    if (inviteToken) {
+      navigate(`/invite-signup?invite=${inviteToken}`);
+    }
+  }, [inviteToken, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,18 +102,20 @@ const Login = () => {
 
     try {
       setLoading(true);
+      const role = loginType === 'team' ? 'builder' : 'customer';
       
       await signUp(
         signupData.email,
         signupData.password,
         {
           full_name: signupData.fullName,
+          role: role
         }
       );
 
       toast({
         title: "Success",
-        description: "Account created successfully!",
+        description: "Account created successfully! Please check your email to verify your account.",
       });
     } catch (error: any) {
       console.error('Signup error:', error);
@@ -110,11 +130,19 @@ const Login = () => {
   };
 
   const getLoginTypeInfo = () => {
+    if (loginType === 'team') {
+      return {
+        title: 'Team Member Login',
+        subtitle: 'Access the builder dashboard and management tools',
+        icon: Building,
+        color: 'bg-[#003562]'
+      };
+    }
     return {
-      title: 'Titan Buildings Login',
-      subtitle: 'Manage customer projects and selections',
-      icon: Building,
-      color: 'bg-primary'
+      title: 'Client Portal Login',
+      subtitle: 'Track your project progress and access documents',
+      icon: Users,
+      color: 'bg-blue-600'
     };
   };
 
@@ -135,7 +163,7 @@ const Login = () => {
             </Button>
             <Badge variant="outline" className="flex items-center gap-1">
               <typeInfo.icon className="h-3 w-3" />
-              Admin
+              {loginType === 'team' ? 'Team' : 'Client'}
             </Badge>
           </div>
           <typeInfo.icon className={`h-8 w-8 mx-auto ${typeInfo.color} text-white rounded-lg p-1.5`} />
@@ -275,6 +303,16 @@ const Login = () => {
             </TabsContent>
           </Tabs>
           
+          <div className="mt-4 text-center">
+            <Button
+              variant="link"
+              size="sm"
+              onClick={() => navigate(`/login?type=${loginType === 'team' ? 'client' : 'team'}`)}
+              className="text-xs text-gray-600"
+            >
+              Switch to {loginType === 'team' ? 'Client' : 'Team'} Login
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>
