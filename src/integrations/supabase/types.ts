@@ -103,6 +103,51 @@ export type Database = {
         }
         Relationships: []
       }
+      customers: {
+        Row: {
+          address: string | null
+          city: string | null
+          created_at: string | null
+          email: string | null
+          first_name: string
+          id: string
+          last_name: string
+          notes: string | null
+          phone: string | null
+          state: string | null
+          updated_at: string | null
+          zip: string | null
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          created_at?: string | null
+          email?: string | null
+          first_name: string
+          id?: string
+          last_name: string
+          notes?: string | null
+          phone?: string | null
+          state?: string | null
+          updated_at?: string | null
+          zip?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          created_at?: string | null
+          email?: string | null
+          first_name?: string
+          id?: string
+          last_name?: string
+          notes?: string | null
+          phone?: string | null
+          state?: string | null
+          updated_at?: string | null
+          zip?: string | null
+        }
+        Relationships: []
+      }
       design_packages: {
         Row: {
           created_at: string | null
@@ -505,6 +550,129 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      project_allowances: {
+        Row: {
+          actual_amount: number | null
+          allowance_amount: number | null
+          category: string
+          created_at: string | null
+          id: string
+          notes: string | null
+          project_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          actual_amount?: number | null
+          allowance_amount?: number | null
+          category: string
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          project_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          actual_amount?: number | null
+          allowance_amount?: number | null
+          category?: string
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          project_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_allowances_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "titan_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_approvals: {
+        Row: {
+          approved_at: string | null
+          approved_by: string
+          id: string
+          ip_address: string | null
+          notes: string | null
+          project_id: string
+          signature_data: string | null
+          version: number | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by: string
+          id?: string
+          ip_address?: string | null
+          notes?: string | null
+          project_id: string
+          signature_data?: string | null
+          version?: number | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string
+          id?: string
+          ip_address?: string | null
+          notes?: string | null
+          project_id?: string
+          signature_data?: string | null
+          version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_approvals_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "titan_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_attachments: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          file_name: string | null
+          file_url: string
+          id: string
+          notes: string | null
+          project_id: string
+          room_id: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          file_name?: string | null
+          file_url: string
+          id?: string
+          notes?: string | null
+          project_id: string
+          room_id?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          file_name?: string | null
+          file_url?: string
+          id?: string
+          notes?: string | null
+          project_id?: string
+          room_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_attachments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "titan_projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       projects: {
         Row: {
@@ -933,6 +1101,89 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      titan_projects: {
+        Row: {
+          building_height: number | null
+          building_length: number | null
+          building_width: number | null
+          city: string | null
+          created_at: string | null
+          created_by: string | null
+          customer_id: string | null
+          garage_door_count: number | null
+          id: string
+          notes: string | null
+          porch_type: string | null
+          project_name: string
+          project_number: string | null
+          project_type: string | null
+          roof_pitch: string | null
+          scope: string | null
+          site_address: string | null
+          specs: Json | null
+          state: string | null
+          status: string | null
+          updated_at: string | null
+          zip: string | null
+        }
+        Insert: {
+          building_height?: number | null
+          building_length?: number | null
+          building_width?: number | null
+          city?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          customer_id?: string | null
+          garage_door_count?: number | null
+          id?: string
+          notes?: string | null
+          porch_type?: string | null
+          project_name: string
+          project_number?: string | null
+          project_type?: string | null
+          roof_pitch?: string | null
+          scope?: string | null
+          site_address?: string | null
+          specs?: Json | null
+          state?: string | null
+          status?: string | null
+          updated_at?: string | null
+          zip?: string | null
+        }
+        Update: {
+          building_height?: number | null
+          building_length?: number | null
+          building_width?: number | null
+          city?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          customer_id?: string | null
+          garage_door_count?: number | null
+          id?: string
+          notes?: string | null
+          porch_type?: string | null
+          project_name?: string
+          project_number?: string | null
+          project_type?: string | null
+          roof_pitch?: string | null
+          scope?: string | null
+          site_address?: string | null
+          specs?: Json | null
+          state?: string | null
+          status?: string | null
+          updated_at?: string | null
+          zip?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "titan_projects_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
