@@ -14,7 +14,6 @@ interface AuthContextType {
   profile: Profile | null;
   loading: boolean;
   session: Session | null;
-  isAdmin: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, userData: { full_name?: string; role?: 'builder' | 'customer' }) => Promise<void>;
   signOut: () => Promise<void>;
@@ -26,8 +25,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // Changed to false to prevent blocking
 
   useEffect(() => {
     let mounted = true;
@@ -133,28 +131,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  useEffect(() => {
-    const checkAdmin = async () => {
-      if (user) {
-        const { data } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .single();
-        setIsAdmin(data?.role === 'builder_admin');
-      } else {
-        setIsAdmin(false);
-      }
-    };
-    checkAdmin();
-  }, [user]);
-
   const value = {
     user,
     profile,
     loading,
     session,
-    isAdmin,
     signIn,
     signUp,
     signOut,
